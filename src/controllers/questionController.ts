@@ -25,5 +25,8 @@ export async function get(req: Request, res: Response): Promise<Response<any, Re
 
 export async function getById(req: Request, res: Response) {
   const  id : number = Number(req.params.id); 
-  //const questionData = await 
+  const questionData:  (questions & {
+    matter: matter[];
+}) | null = await answerService.getQuestionInfo(id);
+  res.status(200).send(questionData);
 }

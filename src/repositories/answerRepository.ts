@@ -1,4 +1,4 @@
-import { questions } from "@prisma/client";
+import { matter, questions } from "@prisma/client";
 import { prisma } from "../config/database";
 
 export async function postAnswer(answeredBy: string, answer: string, questionId: number): Promise<void> {
@@ -10,6 +10,15 @@ export async function findQuestionById(id:number): Promise<questions | null> {
     return result;
 }
 
-export async function findQuestionIfo(id:number) { 
+export async function findQuestionIfo(id:number): Promise<(questions & {
+    matter: matter[];
+}) | null> { 
+    const result = await prisma.questions.findUnique( { 
+        where: { id, },
+        include: {
+            matter: true,
+        },  
+    });
 
+    return result;
 }
